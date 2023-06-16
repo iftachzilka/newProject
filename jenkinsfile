@@ -30,6 +30,7 @@ pipeline {
                 sh '''
                 echo "Line1"
                 echo "Line2"
+                echo "Line3"
                 '''
                 echo "End stage of deploy"
             }
