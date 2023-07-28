@@ -13,7 +13,7 @@ pipeline {
         }
         stage("Create artifacts or make changes") {
             steps {
-                sh "echo 1234 >> testfile.txt"
+                sh "echo 1234 > testfile.txt"
                 sh "cat testfile.txt > newFile.txt"
                 sh "git add ."
                 sh "git commit -m 'Add testfile from Jenkins Pipeline and comments'"
