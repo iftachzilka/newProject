@@ -16,6 +16,9 @@ echo "123" >> file.yml
 #echo $yyy
 #echo $(git branch --show-current)
 
+git config user.name iftachzilka7
+git config user.email iftach.zilka7@gmail.com
+
 # push to repo
 git checkout testtt
 git add file.yml
