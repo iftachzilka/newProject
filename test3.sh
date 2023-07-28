@@ -1,0 +1,268 @@
+#!/usr/bin/bash
+
+################################################################################
+################################################################################
+################################################################################
+
+################################################################################
+# Help                                                                         #
+################################################################################
+Help()
+{
+   # Display Help
+   echo "Add description of the script functions here."
+   echo
+   echo "Syntax: scriptTemplate [-r|-h|-t|-b|-n]"
+   echo "options:"
+   echo "r     Name of repo."
+   echo "h     Print this Help."
+   echo "b     Body in new pr."
+   echo "t     Title of new pr."
+   echo "n     Name of new branch ."
+   echo
+}
+
+################################################################################
+################################################################################
+# Main program                                                                 #
+################################################################################
+################################################################################
+################################################################################
+# Process the input options. Add options as needed.                            #
+################################################################################
+# Get the options
+
+
+
+
+while getopts ":r:t:b:n:h" opt; do
+  case $opt in
+    h)
+      Help
+      exit;;
+    n)
+      # Repo flag
+      branch=$OPTARG
+      ;;
+    t)
+      # Title flag
+      title=$OPTARG
+      ;;
+    b)
+      # Body flag
+      body=$OPTARG
+      ;;
+    r)
+      # Branch flag
+      repo=$OPTARG
+      ;;
+    \?)
+      # Unknown option
+      echo "Unknown option: $opt" >&2
+      exit 1
+      ;;
+  esac
+done
+
+
+# Split the argument at the comma character.
+split_argument=$(awk -F/ '{print $2}' <<< "$repo")
+
+
+
+YELLOW=`tput setaf 3`
+WHITE=`tput setaf 7 bold`
+
+echo "${YELLOW}${branch}"
+echo "${WHITE}"
+
+#echo $branch
+#echo -e "\033[5;33m${branch}"
+
+#shell variables
+#BR_NAME=$branch
+
+echo
+echo "${YELLOW}"
+# Pause the script until the user presses Enter
+#read -n 1 -s -p "--- Now we are cloning the git repo ---"
+#echo "${WHITE}"
+#echo
+
+
+# Check if the repository exists.
+if [ -d "$split_argument" ]; then
+  # The repository exists, try to pull.
+  echo
+  echo "${YELLOW}"
+  # Pause the script until the user presses Enter
+  read -n 1 -s -p "--- Now we are pulling the git repo ---"
+  echo "${WHITE}"
+  echo
+  cd $split_argument
+  git pull origin main
+else
+  # The repository does not exist, clone it.
+  echo
+  echo "${YELLOW}"
+  # Pause the script until the user presses Enter
+  read -n 1 -s -p "--- Now we are cloning the git repo ---"
+  echo "${WHITE}"
+  echo
+  gh repo clone $repo
+  cd $split_argument
+fi
+
+# Clone the git repository
+#gh repo clone $repo
+#iftachzilka/newProject
+
+# split the name folder from repo
+#repo=$1
+
+# Split the argument at the comma character.
+#split_argument=$(awk -F/ '{print $2}' <<< "$repo")
+
+echo
+echo "${YELLOW}"
+# Print the new argument.
+echo $split_argument
+echo "${WHITE}"
+echo
+
+
+#echo
+#echo "${YELLOW}"
+# Pause the script until the user presses Enter
+#read -n 1 -s -p "--- Now go into the git folder ---"
+#echo "${WHITE}"
+#echo
+
+# Change to the cloned directory
+#cd $split_argument
+
+echo
+echo "${YELLOW}"
+# Pause the script until the user presses Enter
+read -n 1 -s -p "--- Now creating a branch ---"
+echo "${WHITE}"
+echo
+
+#create new branch
+git checkout -b $branch
+
+echo
+echo "${YELLOW}"
+# Pause the script until the user presses Enter
+read -n 1 -s -p "--- Now we add a text into a  yaml file ---"
+echo "${WHITE}"
+echo
+
+# set content to a YAML file
+echo "123" >> file.yml
+
+echo
+echo "${YELLOW}"
+# Pause the script until the user presses Enter
+read -n 1 -s -p "--- Now we are adding commit and push to remote repo ---"
+echo "${WHITE}"
+echo
+
+# push to repo
+git add file.yml
+git commit -m "Added text to YAML file"
+git push origin $branch
+
+echo
+echo "${YELLOW}"
+# Pause the script until the user presses Enter
+read -n 1 -s -p "--- Now we open a pr and the remote repo --- "
+echo "${WHITE}"
+echo
+
+# Get the title and body from the user
+#read -p "Title: " title
+#read -p "Body: " body
+
+# Open a pull request
+
+prr=`gh pr create  -t "$title" -b "$body"`
+echo "${YELLOW}"
+echo $prr
+echo "${WHITE}"
+ttt="${prr##*/}"
+echo $ttt
+#echo $ttt > 1234.txt
+
+
+
+prr1=`gh pr view`
+echo "${YELLOW}"
+echo $prr1
+echo "${WHITE}"
+# Get the argument.
+#argument=$1
+
+echo "${YELLOW}"
+# Check if the argument contains the string "hello".
+# Check if the first argument contains some string from the second argument.
+if [[ $prr1 =~ "$ttt" ]]; then
+  # The first argument contains the string from the second argument.
+  echo "The first argument contains the string '"$ttt"'."
+else
+  # The first argument does not contain the string from the second argument.
+  echo "The first argument does not contain the string '"$ttt"'."
+fi
+
+
+echo
+echo
+
+
+prr2=`gh pr view`
+found=false
+while [[ $found == false ]]; do
+
+  # Check if the substring is found in the string
+  if [[ "$prr2" =~ "MERGED" ]]; then
+
+    # If the substring is found, set the `found` variable to true and break out of the loop
+    found=true
+  elif [[ "$prr2" =~ "CLOSED" ]]; then
+    found=close
+  else
+
+    # If the substring is not found, replace all occurrences of the substring with an empty string
+    #string=$(echo "$prr2" | sed "s/MERG//g")
+    found=false
+    echo $prr2
+    prr2=`gh pr view`
+    echo "---Waiting for the argument to be 'done'.---"
+    sleep 1
+  fi
+
+done
+
+
+echo
+echo
+
+
+# Print the output
+if [[ "$found" = true ]]; then
+  echo "The pr for this branch are merged."
+  sleep 5
+  echo
+  echo
+ # git push origin -d $branch
+  git push --delete origin $branch
+elif [[ "$found" = close  ]]; then
+  echo "The pr of this branch was closed by someone"
+  
+else
+  echo "The substring was not found in the string."
+fi
+
+
+cd ..
+echo $ttt > 1234.txt
