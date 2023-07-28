@@ -1,72 +1,5 @@
 #!/usr/bin/bash
 
-################################################################################
-################################################################################
-################################################################################
-
-################################################################################
-# Help                                                                         #
-################################################################################
-Help()
-{
-   # Display Help
-   echo "Add description of the script functions here."
-   echo
-   echo "Syntax: scriptTemplate [-r|-h|-t|-b|-n]"
-   echo "options:"
-   echo "r     Name of repo."
-   echo "h     Print this Help."
-   echo "b     Body in new pr."
-   echo "t     Title of new pr."
-   echo "n     Name of new branch ."
-   echo
-}
-
-################################################################################
-################################################################################
-# Main program                                                                 #
-################################################################################
-################################################################################
-################################################################################
-# Process the input options. Add options as needed.                            #
-################################################################################
-# Get the options
-
-
-
-
-while getopts ":r:t:b:n:h" opt; do
-  case $opt in
-    h)
-      Help
-      exit;;
-    n)
-      # Repo flag
-      branch=$OPTARG
-      ;;
-    t)
-      # Title flag
-      title=$OPTARG
-      ;;
-    b)
-      # Body flag
-      body=$OPTARG
-      ;;
-    r)
-      # Branch flag
-      repo=$OPTARG
-      ;;
-    \?)
-      # Unknown option
-      echo "Unknown option: $opt" >&2
-      exit 1
-      ;;
-  esac
-done
-
-
-# Split the argument at the comma character.
-split_argument=$(awk -F/ '{print $2}' <<< "$repo")
 
 
 
@@ -91,7 +24,7 @@ echo "${YELLOW}"
 
 
 # Check if the repository exists.
-if [ -d "$split_argument" ]; then
+if [ -d "newProject" ]; then
   # The repository exists, try to pull.
   echo
   echo "${YELLOW}"
@@ -99,7 +32,7 @@ if [ -d "$split_argument" ]; then
   read -n 1 -s -p "--- Now we are pulling the git repo ---"
   echo "${WHITE}"
   echo
-  cd $split_argument
+  cd newProjectt
   git pull origin main
 else
   # The repository does not exist, clone it.
@@ -110,7 +43,7 @@ else
   echo "${WHITE}"
   echo
   gh repo clone iftachzilka/newProject
-  cd $split_argument
+  cd newProject
 fi
 
 # Clone the git repository
