@@ -109,7 +109,7 @@ else
   read -n 1 -s -p "--- Now we are cloning the git repo ---"
   echo "${WHITE}"
   echo
-  gh repo clone $repo
+  gh repo clone iftachzilka/newProject
   cd $split_argument
 fi
 
@@ -149,7 +149,7 @@ echo "${WHITE}"
 echo
 
 #create new branch
-git checkout -b $branch
+git checkout -b testt1
 
 echo
 echo "${YELLOW}"
@@ -171,7 +171,7 @@ echo
 # push to repo
 git add file.yml
 git commit -m "Added text to YAML file"
-git push origin $branch
+git push origin testt1
 
 echo
 echo "${YELLOW}"
@@ -186,7 +186,7 @@ echo
 
 # Open a pull request
 
-prr=`gh pr create  -t "$title" -b "$body"`
+prr=`gh pr create  -t "title" -b "body"`
 echo "${YELLOW}"
 echo $prr
 echo "${WHITE}"
@@ -219,50 +219,7 @@ echo
 echo
 
 
-prr2=`gh pr view`
-found=false
-while [[ $found == false ]]; do
-
-  # Check if the substring is found in the string
-  if [[ "$prr2" =~ "MERGED" ]]; then
-
-    # If the substring is found, set the `found` variable to true and break out of the loop
-    found=true
-  elif [[ "$prr2" =~ "CLOSED" ]]; then
-    found=close
-  else
-
-    # If the substring is not found, replace all occurrences of the substring with an empty string
-    #string=$(echo "$prr2" | sed "s/MERG//g")
-    found=false
-    echo $prr2
-    prr2=`gh pr view`
-    echo "---Waiting for the argument to be 'done'.---"
-    sleep 1
-  fi
-
-done
-
-
-echo
-echo
-
-
-# Print the output
-if [[ "$found" = true ]]; then
-  echo "The pr for this branch are merged."
-  sleep 5
-  echo
-  echo
- # git push origin -d $branch
-  git push --delete origin $branch
-elif [[ "$found" = close  ]]; then
-  echo "The pr of this branch was closed by someone"
-  
-else
-  echo "The substring was not found in the string."
-fi
-
 
 cd ..
 echo $ttt > 1234.txt
+rm -r ./newProject
