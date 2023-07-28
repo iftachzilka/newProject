@@ -5,7 +5,7 @@ pipeline {
             steps {
                 git(
                     url: "https://github.com/iftachzilka/newProject.git",
-                    branch: "main",
+                    branch: "testtt",
                     changelog: true,
                     poll: true
                 )
