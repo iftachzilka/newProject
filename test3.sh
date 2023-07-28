@@ -22,7 +22,8 @@ else
   # Pause the script until the user presses Enter
   read -n 1 -s -p "--- Now we are cloning the git repo ---"
   echo
-  gh repo clone iftachzilka/newProject
+  #gh repo clone iftachzilka/newProject
+  https://github.com/iftachzilka/newProject.git
   cd newProject
 fi
 
