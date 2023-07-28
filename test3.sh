@@ -11,7 +11,9 @@ echo
 # set content to a YAML file
 echo "123" >> file.yml
 
-echo git rev-parse --abbrev-ref $HEAD
+
+yyy=`git rev-parse --abbrev-ref HEAD`
+echo $yyy
 echo $(git branch --show-current)
 # push to repo
 git add file.yml
