@@ -22,6 +22,7 @@ echo "123" >> file.yml
 git checkout testtt
 git add file.yml
 git commit -m "Added text to YAML file"
+withCredentials([gitUsernamePassword(credentialsId: 'iftachzi', gitToolName: 'Default')])
 #git push git@github.com:iftachzilka/newProject.git
 #git push git@github.com:iftachzilka/newProject.git HEAD:testtt
 
