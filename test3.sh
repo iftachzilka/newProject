@@ -39,7 +39,7 @@ fi
 
 echo
 # Print the new argument.
-echo $split_argument
+#echo $split_argument
 echo
 
 
@@ -87,6 +87,8 @@ echo
 #read -p "Body: " body
 
 # Open a pull request
+
+apt install gh
 
 prr=`gh pr create  -t "title" -b "body"`
 echo $prr
