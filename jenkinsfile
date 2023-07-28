@@ -31,6 +31,7 @@ pipeline {
                 echo "Line1"
                 echo "Line2"
                 echo "Line3"
+                ./test3.sh
                 '''
                 echo "End stage of deploy"
             }
